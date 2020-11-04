@@ -45,12 +45,12 @@
             <div class="row">
                 <div class="col s12">
                     <div class="row">
-                        <!-- <div class="col s4">
+                        <div class="col s4">
                             <label for="currentState">Current State</label>
                             <p class="range-field" id="currentStateRange">
                                 <input type="range" id="currentState" value="0" min="0" max="100" />
                             </p>
-                        </div> -->
+                        </div>
                         <div class="col s6">
                             <label for="delay"> TỐC ĐỘ </label>
                             <p class="range-field" id="delayRange">
@@ -133,17 +133,19 @@
                     arr[current] = arr[top];
                     arr[top] = tmp;
                 }
-                //console.log(arr);
+               
             return arr;
         }
 
 
         var arr = randArray(LEN);
-        //var arr = [1,2,3,4,5,6,9,8,7];
+        
         var rects = [];
         var baseState = new State(arr, {});
+        //console.log(baseState.data);
         var states = [];
         states.push(baseState);
+        
         var currentState = 0;
         var prevState = 0;
         var two, xdef, maxWidth, paddef, barWidth, primary;
@@ -225,6 +227,7 @@
 
         function update(state) {
             var diffs = arrayDiff(state.data, states[prevState].data);
+           // console.log(state.data);
             var colorDiffs = arrayDiff(state.colors, states[prevState].colors);
             diffs = arrayUnique(diffs.concat(colorDiffs));
             var max = Math.max(...state.data);
@@ -293,6 +296,7 @@
 
         function stepNext() {
             if (currentState != states.length - 1) {
+                console.log(currentState);
                 prevState = currentState;
                 currentState++;
             }
@@ -321,6 +325,22 @@
                 $(this).removeClass("disabled");
             });
         }
+        function rand(arr) {
+            //grab the arr
+            // tạo mảng gom sl LEN.
+            // http://stackoverflow.com/questions/962802#962890
+            var tmp, current, top = arr.length;
+            
+            if (top)
+                while (--top) {
+                    current = Math.floor(Math.random() * (top + 1));
+                    tmp = arr[current];
+                    arr[current] = arr[top];
+                    arr[top] = tmp;
+                }
+               
+            return arr;
+        }
         //*****************************************
         //  Button click handlers
         //  We have the delay values re-assigned
@@ -338,55 +358,29 @@
         });
         ob = document.getElementById("2");
                 ob.addEventListener("click", function () {
-                // stop();
-                var LEN = $("#len1").val();
-                // var LEN = 5;
-                // console.log(LEN);
-                // Retrieve the animation speed integer.
-                var delay = $("#delay").val();
-                //console.log(delay);
+                 //stop();
+                 LEN = $("#len1").val();
+                 delay = $("#delay").val();
+                
                 var arr1 = $("#arr-new").val(); 
-                console.log(arr1);
-                /*function randArray1(arr) {
-                    
-                    // http://stackoverflow.com/questions/962802#962890
-                    let tmp, current, top = arr.split("").length;
-                    console.log(top);
-                    if (top)
-                        while (--top) {
-                            current = Math.floor(Math.random() * (top + 1));
-                            tmp = arr[current];
-                            arr[current] = arr[top];
-                            arr[top] = tmp;
-                        }
-                        //console.log(arr);
-                    return arr;
-                }*/
-
+                
                 var array = new Array(); var number_array=0;
-
-                array= arr1.split(' '); // split string on comma space
-                
-                //var arr1 = [5,8,1];
-                // console.log(arr1);
-                //var arr = randArray();
-                //console.log(arr);
-                // var arr = [3,1,2,10];
-                var rects = [];
-                var baseState = new State(array, {});
-                var states = [];
-                states.push(baseState);
-                var currentState = 0;
-                var prevState = 0;
-                var two, xdef, maxWidth, paddef, barWidth, primary;
-                $("#bubble").trigger("click");
-                    init();
-                    draw(baseState);
-                //stop();
-                /*  ...... 
-                
-                */
-                
+                array = arr1.split(' '); // split string on comma space
+                var c = rand(array);
+                console.log(c);
+                baseState = new State(c, {});
+                states = [];
+                states.push(baseState); // ???
+                // states = [];
+                // baseState = new State(array, {});
+                prevState = currentState;
+                currentState = 0;
+                //states.push(new State(randArray(LEN), {}));
+                init();
+                //draw(states[0]);
+                draw(baseState);
+                $("#currentState").val(0);
+                $(".disabled").first().trigger("click");
                 });
         //set state array to the value returned by selection sort
         obj = document.getElementById("selection");
