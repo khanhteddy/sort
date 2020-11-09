@@ -114,15 +114,17 @@
     <script src="state.js"></script>
 
     <script>
-        var LEN = 10;
+        var LEN = 0;
         // Retrieve the animation speed integer.
         var delay = $("#delay").val();
-        function randArray(length) {
+        function randArray(arr) {
             //grab the arr
             // tạo mảng gom sl LEN.
-            for (var arr = [], i = 0; i < length; ++i) {
-                arr[i] = i + 1;
-            }
+            // for (var arr = [], i = 0; i < length; ++i) {
+            //     arr[i] = i + 1;
+            // }
+            
+            LEN = arr.length;
             // http://stackoverflow.com/questions/962802#962890
             var tmp, current, top = arr.length;
             
@@ -138,22 +140,24 @@
         }
 
 
-        var arr = randArray(LEN);
-        
-        var rects = [];
-        var baseState = new State(arr, {});
-        //console.log(baseState.data);
-        var states = [];
-        states.push(baseState);
+
+        var arr12 = [0,0,0,0,0];
+       var arr = randArray(arr12);
+       // console.log(arr);
+        // var rects = [];
+        // var baseState = new State(arr, {});
+        // //console.log(baseState.data);
+        // var states = [];
+        // states.push(baseState);
         
         var currentState = 0;
         var prevState = 0;
         var two, xdef, maxWidth, paddef, barWidth, primary;
-        $(document).ready(function () {
-            $("#bubble").trigger("click");
-            init();
-            draw(baseState);
-        });
+        // $("#2").click(function () {
+        //     $("#bubble").trigger("click");
+        //     init();
+        //     draw(baseState);
+        // });
 
         $(window).resize(function () {
             init();
@@ -296,14 +300,16 @@
 
         function stepNext() {
             if (currentState != states.length - 1) {
-                console.log(currentState);
+               // console.log(currentState);
                 prevState = currentState;
                 currentState++;
             }
             update(states[currentState]);
+            console.log(currentState);
+            console.log(states.data.length);
             $("#currentState").val(currentState);
             if (currentState == states.length - 1) {
-                stop();
+                stop(); 
             }
         }
 
@@ -338,7 +344,7 @@
                     arr[current] = arr[top];
                     arr[top] = tmp;
                 }
-               
+            //console.log(arr);
             return arr;
         }
         //*****************************************
@@ -366,11 +372,12 @@
                 
                 var array = new Array(); var number_array=0;
                 array = arr1.split(' '); // split string on comma space
-                var c = rand(array);
+                var c = randArray(array);
                 console.log(c);
                 baseState = new State(c, {});
                 states = [];
                 states.push(baseState); // ???
+                console.log(states);
                 // states = [];
                 // baseState = new State(array, {});
                 prevState = currentState;
@@ -378,7 +385,7 @@
                 //states.push(new State(randArray(LEN), {}));
                 init();
                 //draw(states[0]);
-                draw(baseState);
+               draw(baseState);
                 $("#currentState").val(0);
                 $(".disabled").first().trigger("click");
                 });
